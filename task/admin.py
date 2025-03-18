@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProjectDetail, Developer, Task, TaskComment #, BugHistory, EnhancementHistory
+from .models import ProjectDetail, Developer, Task, TaskComment, BugHistory, EnhancementHistory
 
 # Register your models here.
 
@@ -69,23 +69,27 @@ class TaskCommentAdmin(admin.ModelAdmin):
     search_fields = ('task__title', 'developer__full_name')
     list_filter = ('created_at',)
 
+
+from django.contrib import admin
+from .models import BugHistory, EnhancementHistory
+
+class BugHistoryAdmin(admin.ModelAdmin):
+    list_display = ('bug_history_id', 'task', 'updated_by', 'project', 'updated_at')
+    list_filter = ('task', 'updated_by', 'project')  # Add filters in the admin list view
+    search_fields = ('bug_description',)  # Add search functionality
+
+class EnhancementHistoryAdmin(admin.ModelAdmin):
+    list_display = ('enhancement_history_id', 'task', 'updated_by', 'project', 'updated_at')
+    list_filter = ('task', 'updated_by', 'project')  # Add filters in the admin list view
+    search_fields = ('enhancement_description',)  # Add search functionality
+
 # Registering models with the admin site
 admin.site.register(ProjectDetail, ProjectDetailAdmin)
 admin.site.register(Developer, DeveloperAdmin)
 admin.site.register(Task, TaskAdmin)
 admin.site.register(TaskComment, TaskCommentAdmin)
+admin.site.register(BugHistory, BugHistoryAdmin)
+admin.site.register(EnhancementHistory, EnhancementHistoryAdmin)
 
 
-# # Admin Registration
-# @admin.register(BugHistory)
-# class BugHistoryAdmin(admin.ModelAdmin):
-#     list_display = ('bug_history_id', 'task', 'updated_by', 'project', 'updated_at')
-#     search_fields = ('bug_description',)
-#     list_filter = ('updated_at', 'task', 'updated_by')
-
-# @admin.register(EnhancementHistory)
-# class EnhancementHistoryAdmin(admin.ModelAdmin):
-#     list_display = ('enhancement_history_id', 'task', 'updated_by', 'project', 'updated_at')
-#     search_fields = ('enhancement_description',)
-#     list_filter = ('updated_at', 'task', 'updated_by')
 

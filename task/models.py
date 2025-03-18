@@ -1,10 +1,13 @@
 from django.db import models
 
+
+
 class ProjectDetail(models.Model):
     project_id = models.AutoField(primary_key=True)
     project_name = models.CharField(max_length=100)
     planned_start_date = models.DateTimeField()
     planned_end_date = models.DateTimeField()
+    # developers = models.ManyToManyField("Developer", related_name="projects")
 
     def __str__(self):
         return self.project_name
@@ -23,6 +26,7 @@ class Developer(models.Model):
 
     def __str__(self):
         return self.full_name
+    
 
 
 class Task(models.Model):
@@ -90,33 +94,33 @@ class TaskComment(models.Model):
         return f"Comment by {self.developer.full_name} on {self.task.title}"
     
 
-# class BugHistory(models.Model):
-#     bug_history_id = models.AutoField(primary_key=True)
-#     task = models.ForeignKey('Task', on_delete=models.CASCADE)
-#     updated_by = models.ForeignKey('Developer', on_delete=models.CASCADE)
-#     project = models.ForeignKey('ProjectDetail', on_delete=models.SET_NULL, null=True, blank=True)
-#     bug_description = models.TextField()
-#     updated_at = models.DateTimeField(auto_now_add=True)
+class BugHistory(models.Model):
+    bug_history_id = models.AutoField(primary_key=True)
+    task = models.ForeignKey('Task', on_delete=models.CASCADE)
+    updated_by = models.ForeignKey('Developer', on_delete=models.CASCADE)
+    project = models.ForeignKey('ProjectDetail', on_delete=models.SET_NULL, null=True, blank=True)
+    bug_description = models.TextField()
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         db_table = 'bug_history'
+    class Meta:
+        db_table = 'bug_history'
 
-#     def __str__(self):
-#         return f"Bug {self.bug_history_id} - Task {self.task.task_id}"
+    def __str__(self):
+        return f"Bug {self.bug_history_id} - Task {self.task.task_id}"
 
-# class EnhancementHistory(models.Model):
-#     enhancement_history_id = models.AutoField(primary_key=True)
-#     task = models.ForeignKey('Task', on_delete=models.CASCADE)
-#     updated_by = models.ForeignKey('Developer', on_delete=models.CASCADE)
-#     project = models.ForeignKey('ProjectDetail', on_delete=models.SET_NULL, null=True, blank=True)
-#     enhancement_description = models.TextField()
-#     updated_at = models.DateTimeField(auto_now_add=True)
+class EnhancementHistory(models.Model):
+    enhancement_history_id = models.AutoField(primary_key=True)
+    task = models.ForeignKey('Task', on_delete=models.CASCADE)
+    updated_by = models.ForeignKey('Developer', on_delete=models.CASCADE)
+    project = models.ForeignKey('ProjectDetail', on_delete=models.SET_NULL, null=True, blank=True)
+    enhancement_description = models.TextField()
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         db_table = 'enhancement_history'
+    class Meta:
+        db_table = 'enhancement_history'
 
-#     def __str__(self):
-#         return f"Enhancement {self.enhancement_history_id} - Task {self.task.task_id}"
+    def __str__(self):
+        return f"Enhancement {self.enhancement_history_id} - Task {self.task.task_id}"
     
 
 

@@ -17,4 +17,9 @@ urlpatterns = [
     # Task Comment URLs
     path('task-comments/', views.TaskCommentListCreateView.as_view(), name='task-comment-list-create'),
     path('task-comments/<int:pk>/', views.TaskCommentRetrieveUpdateDestroyView.as_view(), name='task-comment-retrieve-update-destroy'),
+
+    path('bug-history/', views.BugHistoryListCreateAPIView.as_view(), name='bug-history-list-create'),
+    path('bug-history/<int:pk>/', views.BugHistoryRetrieveUpdateDestroyAPIView.as_view(), name='bug-history-retrieve-update-destroy'),
+    path('enhancement-history/', views.EnhancementHistoryListCreateAPIView.as_view(), name='enhancement-history-list-create'),
+    path('enhancement-history/<int:pk>/', views.EnhancementHistoryRetrieveUpdateDestroyAPIView.as_view(), name='enhancement-history-retrieve-update-destroy'),
 ]

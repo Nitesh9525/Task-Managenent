@@ -1,5 +1,5 @@
 import django_filters
-from .models import ProjectDetail, Developer, Task, TaskComment
+from .models import ProjectDetail, Developer, Task, TaskComment,BugHistory , EnhancementHistory
 
 
 class ProjectDetailFilter(django_filters.FilterSet):
@@ -44,3 +44,28 @@ class TaskCommentFilter(django_filters.FilterSet):
     class Meta:
         model = TaskComment
         fields = '__all__'
+
+
+class BugHistoryFilter(django_filters.FilterSet):
+    bug_history_id = django_filters.NumberFilter(field_name='bug_history_id')
+    task = django_filters.ModelChoiceFilter(queryset=Task.objects.all(), field_name='task')
+    updated_by = django_filters.ModelChoiceFilter(queryset=Developer.objects.all(), field_name='updated_by')
+    project = django_filters.ModelChoiceFilter(queryset=ProjectDetail.objects.all(), field_name='project')
+    bug_description = django_filters.CharFilter(field_name='bug_description', lookup_expr='icontains')
+    updated_at = django_filters.DateTimeFromToRangeFilter(field_name='updated_at')
+
+    class Meta:
+        model = BugHistory
+        fields = ['bug_history_id', 'task', 'updated_by', 'project', 'bug_description', 'updated_at']
+
+class EnhancementHistoryFilter(django_filters.FilterSet):
+    enhancement_history_id = django_filters.NumberFilter(field_name='enhancement_history_id')
+    task = django_filters.ModelChoiceFilter(queryset=Task.objects.all(), field_name='task')
+    updated_by = django_filters.ModelChoiceFilter(queryset=Developer.objects.all(), field_name='updated_by')
+    project = django_filters.ModelChoiceFilter(queryset=ProjectDetail.objects.all(), field_name='project')
+    enhancement_description = django_filters.CharFilter(field_name='enhancement_description', lookup_expr='icontains')
+    updated_at = django_filters.DateTimeFromToRangeFilter(field_name='updated_at')
+
+    class Meta:
+        model = EnhancementHistory
+        fields = ['enhancement_history_id', 'task', 'updated_by', 'project', 'enhancement_description', 'updated_at']
