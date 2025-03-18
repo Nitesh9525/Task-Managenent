@@ -31,5 +31,5 @@ urlpatterns = [
     # Include other app URLs (e.g., API endpoints)
     path('admin/', admin.site.urls),
     path('api/', include('task.urls')),  # Include the app URLs
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),
+    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),
 ]
