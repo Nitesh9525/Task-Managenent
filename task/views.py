@@ -1,6 +1,6 @@
 from rest_framework import generics
 from .models import ProjectDetail, Developer, Task, TaskComment #,BugHistory, EnhancementHistory
-from .serializers import ProjectDetailSerializer, DeveloperSerializer, TaskSerializer, TaskCommentSerializer,BugHistorySerializer, EnhancementHistorySerializer
+from .serializers import ProjectDetailSerializer, DeveloperSerializer, TaskSerializer, TaskCommentSerializer #,BugHistorySerializer, EnhancementHistorySerializer
 from .filters import ProjectDetailFilter, DeveloperFilter, TaskFilter, TaskCommentFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
