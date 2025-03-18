@@ -6,7 +6,7 @@ from drf_yasg import openapi
 # Swagger schema view
 schema_view = get_schema_view(
    openapi.Info(
-      title="Project Management API",
+      title="KPRO Task Management",
       default_version='v1',
       description="API documentation for managing projects, developers, tasks, and comments",
       terms_of_service="https://www.google.com/policies/terms/",
