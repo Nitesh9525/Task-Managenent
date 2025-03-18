@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'task',
     # 'drf_spectacular',
     'django_filters',
+    'corsheaders',
 ]
 
 # Rest Framework settings (optional)
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'task_management.urls'
