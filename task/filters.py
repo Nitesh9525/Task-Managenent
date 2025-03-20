@@ -3,6 +3,7 @@ from .models import ProjectDetail, Developer, Task, TaskComment,BugHistory , Enh
 
 
 class ProjectDetailFilter(django_filters.FilterSet):
+    project_id = django_filters.NumberFilter(field_name="project_id")  # Exact match filtering
     project_name = django_filters.CharFilter(lookup_expr='icontains')  # Case-insensitive search
     planned_start_date = django_filters.DateTimeFilter(field_name="planned_start_date", lookup_expr="gte")
     planned_end_date = django_filters.DateTimeFilter(field_name="planned_end_date", lookup_expr="lte")
@@ -13,6 +14,7 @@ class ProjectDetailFilter(django_filters.FilterSet):
 
 
 class DeveloperFilter(django_filters.FilterSet):
+    developer_id = django_filters.NumberFilter(field_name="developer_id")  # Exact match filtering
     full_name = django_filters.CharFilter(lookup_expr='icontains')
     email = django_filters.CharFilter(lookup_expr='icontains')
     company = django_filters.CharFilter(lookup_expr='icontains')

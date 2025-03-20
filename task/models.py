@@ -2,23 +2,50 @@ from django.db import models
 
 
 
+# class ProjectDetail(models.Model):
+#     project_id = models.AutoField(primary_key=True)
+#     project_name = models.CharField(max_length=100)
+#     planned_start_date = models.DateTimeField()
+#     planned_end_date = models.DateTimeField()
+#     developers = models.ManyToManyField("Developer", related_name="projects")  # Many-to-Many Relationship
+
+#     def __str__(self):
+#         return self.project_name
+  
+
+# class Developer(models.Model):
+#     developer_id = models.AutoField(primary_key=True)
+#     project = models.ForeignKey(ProjectDetail, on_delete=models.CASCADE, null=True, blank=True) # remove null = True 
+#     full_name = models.CharField(max_length=100)
+#     email = models.EmailField(unique=True)
+#     mobile_number = models.CharField(max_length=20, blank=True)
+#     password_hash = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     company = models.CharField(max_length=100, blank=True)
+#     monthly_rate = models.FloatField(null=True, blank=True)
+#     address = models.CharField(max_length=255, blank=True)
+
+#     def __str__(self):
+#         return self.full_name
+
+
 class ProjectDetail(models.Model):
     project_id = models.AutoField(primary_key=True)
     project_name = models.CharField(max_length=100)
-    planned_start_date = models.DateTimeField()
-    planned_end_date = models.DateTimeField()
-    # developers = models.ManyToManyField("Developer", related_name="projects")
+    planned_start_date = models.DateTimeField(blank=True,null=True)
+    planned_end_date = models.DateTimeField(blank=True,null=True)
+    developers = models.ManyToManyField("Developer", related_name="projects",blank=True,null=True)  # Many-to-Many Relationship
 
     def __str__(self):
         return self.project_name
-
+  
 
 class Developer(models.Model):
     developer_id = models.AutoField(primary_key=True)
     full_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     mobile_number = models.CharField(max_length=20, blank=True)
-    password_hash = models.TextField()
+    password_hash = models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     company = models.CharField(max_length=100, blank=True)
     monthly_rate = models.FloatField(null=True, blank=True)
@@ -113,7 +140,7 @@ class EnhancementHistory(models.Model):
     task = models.ForeignKey('Task', on_delete=models.CASCADE)
     updated_by = models.ForeignKey('Developer', on_delete=models.CASCADE)
     project = models.ForeignKey('ProjectDetail', on_delete=models.SET_NULL, null=True, blank=True)
-    enhancement_description = models.TextField()
+    enhancement_description = models.TextField(null=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -121,6 +148,16 @@ class EnhancementHistory(models.Model):
 
     def __str__(self):
         return f"Enhancement {self.enhancement_history_id} - Task {self.task.task_id}"
+    
+class ProjectFile(models.Model):
+    """Model to store multiple files for a project"""
+    file_id = models.AutoField(primary_key=True)
+    project = models.ForeignKey(ProjectDetail, on_delete=models.CASCADE, related_name="files")
+    file = models.FileField(upload_to='project_files/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"File for {self.project.project_name} - {self.file.name}"
     
 
 

@@ -22,4 +22,7 @@ urlpatterns = [
     path('bug-history/<int:pk>/', views.BugHistoryRetrieveUpdateDestroyAPIView.as_view(), name='bug-history-retrieve-update-destroy'),
     path('enhancement-history/', views.EnhancementHistoryListCreateAPIView.as_view(), name='enhancement-history-list-create'),
     path('enhancement-history/<int:pk>/', views.EnhancementHistoryRetrieveUpdateDestroyAPIView.as_view(), name='enhancement-history-retrieve-update-destroy'),
+
+    path('project-files/', views.ProjectFileListCreateView.as_view(), name='project-file-list-create'),
+    path('project-files/<int:pk>/', views.ProjectFileRetrieveUpdateDestroyView.as_view(), name='project-file-detail'),
 ]

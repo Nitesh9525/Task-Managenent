@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import ProjectDetail, Developer, Task, TaskComment ,BugHistory, EnhancementHistory #, Image, File
-from .serializers import ProjectDetailSerializer, DeveloperSerializer, TaskSerializer, TaskCommentSerializer ,BugHistorySerializer, EnhancementHistorySerializer
+from .models import ProjectDetail, Developer, Task, TaskComment ,BugHistory, EnhancementHistory, ProjectFile #, Image, File
+from .serializers import ProjectDetailSerializer, DeveloperSerializer, TaskSerializer, TaskCommentSerializer ,BugHistorySerializer, EnhancementHistorySerializer,ProjectFileSerializer, MultipleProjectFileUploadSerializer #,DeveloperWithProjectsSerializer
 from .filters import ProjectDetailFilter, DeveloperFilter, TaskFilter, TaskCommentFilter, EnhancementHistoryFilter , BugHistoryFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -14,7 +14,8 @@ class ProjectDetailListCreateView(generics.ListCreateAPIView):
     search_fields = ["project_id",
                      "project_name",
                      "planned_start_date",
-                     "planned_end_date"
+                     "planned_end_date",
+                     "developers",
                      ]  # Enables full-text search
     ordering_fields = '__all__'  # Allows ordering by any column
 
@@ -27,7 +28,8 @@ class ProjectDetailRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIVi
 
 class DeveloperListCreateView(generics.ListCreateAPIView):
     queryset = Developer.objects.all()
-    serializer_class = DeveloperSerializer
+    # serializer_class = DeveloperSerializer
+    serializer_class = DeveloperSerializer #DeveloperWithProjectsSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = DeveloperFilter
     search_fields = ['full_name', 'email', 'company']
@@ -37,7 +39,7 @@ class DeveloperListCreateView(generics.ListCreateAPIView):
 
 class DeveloperRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Developer.objects.all()
-    serializer_class = DeveloperSerializer
+    serializer_class = DeveloperSerializer #DeveloperWithProjectsSerializer
 
 
 class TaskListCreateView(generics.ListCreateAPIView):
@@ -124,4 +126,43 @@ class EnhancementHistoryListCreateAPIView(generics.ListCreateAPIView):
 class EnhancementHistoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = EnhancementHistory.objects.all()
     serializer_class = EnhancementHistorySerializer
+
+
+# class ProjectFileListCreateView(generics.ListCreateAPIView):
+#     """View to upload and list project files"""
+#     queryset = ProjectFile.objects.all()
+#     serializer_class = MultipleProjectFileUploadSerializer
+#     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+#     search_fields = ["project__project_name", "file"]
+#     ordering_fields = "__all__"
+
+# class ProjectFileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+#     """View to retrieve, update, and delete project files"""
+#     queryset = ProjectFile.objects.all()
+#     serializer_class = MultipleProjectFileUploadSerializer
  
+
+class ProjectFileListCreateView(generics.ListCreateAPIView):
+    """View to upload and list project files"""
+    queryset = ProjectFile.objects.all()
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ["project__project_name", "file"]
+    ordering_fields = "__all__"
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return MultipleProjectFileUploadSerializer
+        return ProjectFileSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        file_instances = serializer.save()
+        return Response(ProjectFileSerializer(file_instances, many=True).data, status=status.HTTP_201_CREATED)
+
+
+class ProjectFileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """View to retrieve, update, and delete individual project files"""
+    
+    queryset = ProjectFile.objects.all()
+    serializer_class = ProjectFileSerializer
