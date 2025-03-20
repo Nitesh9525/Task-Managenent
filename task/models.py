@@ -149,16 +149,33 @@ class EnhancementHistory(models.Model):
     def __str__(self):
         return f"Enhancement {self.enhancement_history_id} - Task {self.task.task_id}"
     
-class ProjectFile(models.Model):
-    """Model to store multiple files for a project"""
-    file_id = models.AutoField(primary_key=True)
-    project = models.ForeignKey(ProjectDetail, on_delete=models.CASCADE, related_name="files")
-    file = models.FileField(upload_to='project_files/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+# class ProjectFile(models.Model):
+#     """Model to store multiple files for a project"""
+#     file_id = models.AutoField(primary_key=True)
+#     project = models.ForeignKey(ProjectDetail, on_delete=models.CASCADE, related_name="files")
+#     file = models.FileField(upload_to='project_files/')
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"File for {self.project.project_name} - {self.file.name}"
+#     def __str__(self):
+#         return f"File for {self.project.project_name} - {self.file.name}"
     
 
 
 
+import os
+from django.utils.text import slugify
+
+def project_file_path(instance, filename):
+    """Generate file path for uploaded files within a project-specific folder"""
+    project_name = slugify(instance.project.project_name)
+    return os.path.join(f'project_files/{project_name}', filename)
+
+class ProjectFile(models.Model):
+    """Model to store multiple files for a project"""
+    file_id = models.AutoField(primary_key=True)
+    project = models.ForeignKey(ProjectDetail, on_delete=models.CASCADE, related_name="files")
+    file = models.FileField(upload_to=project_file_path)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"File for {self.project.project_name} - {self.file.name}"
