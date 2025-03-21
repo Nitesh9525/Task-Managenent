@@ -58,14 +58,14 @@ class TaskCommentAdmin(admin.ModelAdmin):
 
 # Bug History Admin
 class BugHistoryAdmin(admin.ModelAdmin):
-    list_display = ('bug_history_id', 'task', 'updated_by', 'project', 'updated_at')
-    list_filter = ('task', 'updated_by', 'project')
+    list_display = ('bug_history_id', 'task', 'developer_id', 'project', 'updated_at')
+    list_filter = ('task', 'developer_id', 'project')
     search_fields = ('bug_description',)
 
 # Enhancement History Admin
 class EnhancementHistoryAdmin(admin.ModelAdmin):
-    list_display = ('enhancement_history_id', 'task', 'updated_by', 'project', 'updated_at')
-    list_filter = ('task', 'updated_by', 'project')
+    list_display = ('enhancement_history_id', 'task', 'developer_id', 'project', 'updated_at')
+    list_filter = ('task', 'developer_id', 'project')
     search_fields = ('enhancement_description',)
 
 # Project File Admin with File Preview

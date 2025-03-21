@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     # 'drf_spectacular',
     'django_filters',
     'corsheaders',
+    "storages",
 ]
 
 # Rest Framework settings (optional)

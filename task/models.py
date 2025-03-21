@@ -123,8 +123,8 @@ class TaskComment(models.Model):
 
 class BugHistory(models.Model):
     bug_history_id = models.AutoField(primary_key=True)
-    task = models.ForeignKey('Task', on_delete=models.CASCADE)
-    updated_by = models.ForeignKey('Developer', on_delete=models.CASCADE)
+    task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
+    developer_id = models.ForeignKey('Developer', on_delete=models.CASCADE)
     project = models.ForeignKey('ProjectDetail', on_delete=models.SET_NULL, null=True, blank=True)
     bug_description = models.TextField()
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -137,8 +137,8 @@ class BugHistory(models.Model):
 
 class EnhancementHistory(models.Model):
     enhancement_history_id = models.AutoField(primary_key=True)
-    task = models.ForeignKey('Task', on_delete=models.CASCADE)
-    updated_by = models.ForeignKey('Developer', on_delete=models.CASCADE)
+    task = models.ForeignKey('Task', on_delete=models.CASCADE,null=True, blank=True)
+    developer_id = models.ForeignKey('Developer', on_delete=models.CASCADE,null=True, blank=True)
     project = models.ForeignKey('ProjectDetail', on_delete=models.SET_NULL, null=True, blank=True)
     enhancement_description = models.TextField(null=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -163,12 +163,14 @@ class EnhancementHistory(models.Model):
 
 
 import os
-from django.utils.text import slugify
+from django.utils.text import slugify 
 
 def project_file_path(instance, filename):
     """Generate file path for uploaded files within a project-specific folder"""
     project_name = slugify(instance.project.project_name)
     return os.path.join(f'project_files/{project_name}', filename)
+
+ 
 
 class ProjectFile(models.Model):
     """Model to store multiple files for a project"""
